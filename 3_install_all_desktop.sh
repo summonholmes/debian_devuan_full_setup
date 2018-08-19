@@ -104,3 +104,8 @@ iface lo inet loopback
 # This is an autoconfigured IPv6 interface
 #iface eth0 inet6 auto
 " > /etc/network/interfaces
+
+### Set sddm hidpi settings
+/bin/echo "#!/bin/sh
+# Xsetup - run as root before the login dialog appears
+xrandr --output DVI-I-1 --dpi 144x144" > /usr/share/sddm/scripts/Xsetup
