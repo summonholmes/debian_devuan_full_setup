@@ -114,3 +114,5 @@ iface lo inet loopback
 #iface eth0 inet6 auto
 " > /etc/network/interfaces
  
+# Disable pcspkr
+/bin/echo "blacklist pcspkr" > /etc/modprobe.d/pcspkr.conf
