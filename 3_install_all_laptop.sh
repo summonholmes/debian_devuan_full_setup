@@ -6,30 +6,28 @@
 /usr/bin/apt-get -t ascii-backports install intel-microcode -y
 /usr/bin/apt-get -t ascii-backports install xserver-xorg-input-libinput -y
 /usr/bin/apt-get -t ascii-backports install xserver-xorg-video-intel -y
-/usr/bin/apt-get -t ascii-backports installxserver-xorg-input-wacom -y 
-/bin/echo "#!/bin/sh" > /etc/init.d/isdv4
-/bin/echo "/usr/bin/isdv4-serial-inputattach /dev/ttyS0 > /dev/null 2>&1 &" >> /etc/init.d/isdv4
-/bin/chmod +x /etc/init.d/isdv4
+/usr/bin/apt-get -t ascii-backports install xserver-xorg-input-wacom -y 
 
 ### Install fonts
 /usr/bin/apt-get -t ascii-backports install powerline fonts-firacode fonts-roboto fonts-liberation -y
 
 ## Install plugins
-/usr/bin/apt-get -t ascii-backports install zip unzip unrar p7zip gstreamer-plugins-1.0-{good,bad,ugly} zsh build-essential git curl dirmngr screenfetch -y
+/usr/bin/apt-get -t ascii-backports install ntp bash-completion vim zip unzip unrar p7zip zsh build-essential git curl dirmngr screenfetch -y
 
 ### Fully install KDE
 /usr/bin/apt-get -t ascii-backports install plasma-desktop plasma-nm sddm sddm-theme-breeze network-manager-openvpn kio-mtp plasma-applet-redshift-control -y
 
 ### More KDE apps
-/usr/bin/apt-get -t ascii-backports install dolphin konsole kmail kate amarok gwenview ark kde-spectacle okular -y
+/usr/bin/apt-get -t ascii-backports install dolphin konsole kmail kate amarok gwenview ark kde-spectacle okular ffmpegthumbs -y
 
 ### Install Devuan-native apps
 /usr/bin/apt-get -t ascii-backports install libreoffice libreoffice-kde smplayer smplayer-themes keepassx transmission-qt imagemagick -y
+/usr/bin/apt-get -t ascii-backports install gstreamer1.0-plugins-good gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly -y
 /usr/bin/dpkg --add-architecture i386
 /usr/bin/apt-get update
-/usr/bin/apt-get -t ascii-backports steam wine -y
+/usr/bin/apt-get -t ascii-backports install steam wine -y
 # /usr/bin/apt-get -t ascii-backports qemu virt-manager -y
-/usr/bin/apt-get -t ascii-backports tlp tp-smapi-dkms -y
+/usr/bin/apt-get -t ascii-backports install tlp tp-smapi-dkms -y
 
 ### Install Latest Firefox
 cd /tmp
@@ -79,25 +77,13 @@ cd /tmp
 
 ### Post install tasks
 /bin/echo "flat-volumes = no" >> /etc/pulse/daemon.conf
-/bin/echo "#!/bin/sh -e
-#
-# rc.local
-#
-# This script is executed at the end of each multiuser runlevel.
-# Make sure that the script will "exit 0" on success or any other
-# value on error.
-#
-# In order to enable or disable this script just change the execution
-# bits.
-#
-# By default this script does nothing.
+/bin/echo "#!/bin/sh
 sleep 90
-echo `date +\%Y/\%m/\%d` > /var/log/aptdistupgrade.log 2>&1
-echo `date +\%I:\%M:\%S` >> /var/log/aptdistupgrade.log 2>&1
+echo 2018/08/19 > /var/log/aptdistupgrade.log 2>&1
+echo 04:27:17 >> /var/log/aptdistupgrade.log 2>&1
 apt-get update >> /var/log/aptdistupgrade.log 2>&1
-apt-get dist-upgrade -y >> /var/log/aptdistupgrade.log 2>&1
-exit 0
-" > /etc/rc.local 
+apt-get dist-upgrade -y >> /var/log/aptdistupgrade.log 2>&1" > /etc/init.d/aptdistupgrade
+/bin/chmod +x /etc/init.d/aptdistupgrade
 /bin/echo "# This file describes the network interfaces available on your system
 # and how to activate them. For more information, see interfaces(5).
 
@@ -113,6 +99,7 @@ iface lo inet loopback
 # This is an autoconfigured IPv6 interface
 #iface eth0 inet6 auto
 " > /etc/network/interfaces
- 
-# Disable pcspkr
-/bin/echo "blacklist pcspkr" > /etc/modprobe.d/pcspkr.conf
+
+/bin/echo "#!/bin/sh" > /etc/init.d/isdv4
+/bin/echo "/usr/bin/isdv4-serial-inputattach /dev/ttyS0 > /dev/null 2>&1 &" >> /etc/init.d/isdv4
+/bin/chmod +x /etc/init.d/isdv4
