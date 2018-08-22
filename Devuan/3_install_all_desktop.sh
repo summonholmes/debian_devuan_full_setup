@@ -1,12 +1,11 @@
-#!/bin/sh
+ #!/bin/sh
 
 ### Install correct video and input drivers
 /usr/bin/apt-get -t ascii-backports install libpolkit-backend-elogind-1-0 -y
 /usr/bin/apt-get -t ascii-backports install sysv-rc-conf -y
-/usr/bin/apt-get -t ascii-backports install intel-microcode -y
+/usr/bin/apt-get -t ascii-backports install amd64-microcode -y
 /usr/bin/apt-get -t ascii-backports install xserver-xorg-input-libinput -y
-/usr/bin/apt-get -t ascii-backports install xserver-xorg-video-intel -y
-/usr/bin/apt-get -t ascii-backports install xserver-xorg-input-wacom -y 
+/usr/bin/apt-get -t ascii-backports install xserver-xorg-video-nouveau -y
 
 ### Install fonts
 /usr/bin/apt-get -t ascii-backports install powerline fonts-firacode fonts-roboto fonts-liberation -y
@@ -23,11 +22,6 @@
 ### Install Devuan-native apps
 /usr/bin/apt-get -t ascii-backports install libreoffice libreoffice-kde smplayer smplayer-themes keepassx transmission-qt imagemagick -y
 /usr/bin/apt-get -t ascii-backports install gstreamer1.0-plugins-good gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly -y
-/usr/bin/dpkg --add-architecture i386
-/usr/bin/apt-get update
-/usr/bin/apt-get -t ascii-backports install steam wine -y
-# /usr/bin/apt-get -t ascii-backports qemu virt-manager -y
-/usr/bin/apt-get -t ascii-backports install tlp tp-smapi-dkms -y
 
 ### Install Latest Firefox
 cd /tmp
@@ -65,10 +59,8 @@ Exec=/opt/firefox/firefox --private-window %u" > /usr/share/applications/firefox
 /usr/bin/apt-get -t ascii-backports install -f -y
 
 ### Install Miniconda
-cd /home/summonholmes
 # Let user install later
 /usr/bin/wget -O miniconda3.sh "https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh"
-cd /tmp
 
 ### Install Dropbox
 /usr/bin/wget -O dropbox.deb "https://www.dropbox.com/download?dl=packages/ubuntu/dropbox_2015.10.28_amd64.deb"
@@ -76,30 +68,33 @@ cd /tmp
 /usr/bin/apt-get -t ascii-backports install -f -y
 
 ### Post install tasks
+# Change pulseaudio defaults
 /bin/echo "flat-volumes = no" >> /etc/pulse/daemon.conf
+
+# Add distupgrade script
 /bin/echo "#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          aptdistupgrade
+# Required-Start:    $remote_fs network-manager
+# Required-Stop:     $remote_fs network-manager
+# Should-Start:      $syslog
+# Should-Stop:       $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: aptdistupgrade
+# Description:       Daemon for automatically updating system
+### END INIT INFO
 sleep 90
 echo 2018/08/19 > /var/log/aptdistupgrade.log 2>&1
 echo 04:27:17 >> /var/log/aptdistupgrade.log 2>&1
 apt-get update >> /var/log/aptdistupgrade.log 2>&1
 apt-get dist-upgrade -y >> /var/log/aptdistupgrade.log 2>&1" > /etc/init.d/aptdistupgrade
 /bin/chmod +x /etc/init.d/aptdistupgrade
-/bin/echo "# This file describes the network interfaces available on your system
-# and how to activate them. For more information, see interfaces(5).
 
-source /etc/network/interfaces.d/*
+# Let NetworkManager handle networking
+/bin/sed -e '/iface e\|allow/ s/^#*/#/' -i /etc/network/interfaces
 
-# The loopback network interface
-auto lo
-iface lo inet loopback
-
-# The primary network interface
-#allow-hotplug eth0
-#iface eth0 inet dhcp
-# This is an autoconfigured IPv6 interface
-#iface eth0 inet6 auto
-" > /etc/network/interfaces
-
-/bin/echo "#!/bin/sh" > /etc/init.d/isdv4
-/bin/echo "/usr/bin/isdv4-serial-inputattach /dev/ttyS0 > /dev/null 2>&1 &" >> /etc/init.d/isdv4
-/bin/chmod +x /etc/init.d/isdv4
+### Set sddm hidpi settings
+/bin/echo "#!/bin/sh
+# Xsetup - run as root before the login dialog appears
+xrandr --output DVI-I-1 --dpi 144x144" > /usr/share/sddm/scripts/Xsetup
