@@ -1,4 +1,4 @@
-# devuan_full_setup
+# debian_devuan_full_setup
 A toast to my fellow neckbeards.  Cheers!
 
 ## Introduction
