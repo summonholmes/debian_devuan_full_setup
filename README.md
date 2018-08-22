@@ -6,7 +6,7 @@ They say that the best sysadmins are lazy.  Wouldn't it be fantastic if everythi
 
 Rather than configure a system inch-by-inch, why not put everything into a few shell scripts and forget all your troubles?
 
-Why am I doing this for Devuan?  I wanted to take a vacation away from Debian and see how I'd adapt in a similar non-systemd environment.  Non-systemd distributions have little room in the spotlight these days, yet remain excellent and in many ways, superior.  While I'm not here to bash systemd, it has introduced toxic attitudes, security vulnerabilities, and other crucial bugs due to its massive scope.  On the flipside and as of today, there is far less support for problems encountered in non-systemd distributions.
+Why am I doing this for Devuan?  I wanted to take a vacation away from Debian and see how I'd adapt in a similar non-systemd environment.  Non-systemd distributions have little room in the spotlight these days, yet remain excellent and in many ways, superior.  While I'm not here to bash systemd, it has introduced toxic attitudes, security vulnerabilities, and other crucial bugs due to its massive scope.  On the flipside and as of today, there is far less support for problems encountered in non-systemd distributions.  Therefore, I also did this for Debian.
 
 However, if you put on your big boy pants and can solve challenging problems, why not give a distribution like Devuan a try?  There's also Slackware, Void, Gentoo, the BSDs, and a few more.  I find Devuan and Void to be the easiest choices in the non-systemd camp, and prefer Devuan for stability.
 
