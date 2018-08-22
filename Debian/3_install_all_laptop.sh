@@ -1,7 +1,7 @@
 #!/bin/sh
 
 ### Install correct video and input drivers
-/usr/bin/apt-get -t stretch-backports install intel-microcode -y
+/usr/bin/apt-get -t stretch-backports install intel-microcode firmware-realtek -y
 /usr/bin/apt-get -t stretch-backports install xserver-xorg-input-libinput -y
 /usr/bin/apt-get -t stretch-backports install xserver-xorg-video-intel -y
 /usr/bin/apt-get -t stretch-backports install xserver-xorg-input-wacom -y 
@@ -106,4 +106,5 @@ systemctl enable aptdistupgrade.timer
 # Let NetworkManager handle networking
 /bin/sed -e '/iface e\|allow/ s/^#*/#/' -i /etc/network/interfaces
 
+# Add plymouth
 ### Disable unneeded services

@@ -1,7 +1,7 @@
  #!/bin/sh
 
 ### Install correct video and input drivers
-/usr/bin/apt-get -t stretch-backports install amd64-microcode -y
+/usr/bin/apt-get -t stretch-backports install amd64-microcode firmware-realtek -y
 /usr/bin/apt-get -t stretch-backports install xserver-xorg-input-libinput -y
 /usr/bin/apt-get -t stretch-backports install xserver-xorg-video-nouveau -y
 
@@ -104,4 +104,5 @@ systemctl enable aptdistupgrade.timer
 ### Set sddm hidpi settings
 /bin/echo "xrandr --output DVI-I-1 --dpi 144x144" >> /usr/share/sddm/scripts/Xsetup
 
+# Add plymouth theme
 ### Disable unneeded services
