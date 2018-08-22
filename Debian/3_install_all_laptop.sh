@@ -1,7 +1,7 @@
 #!/bin/sh
 
 ### Install correct video and input drivers
-/usr/bin/apt-get -t stretch-backports install intel-microcode firmware-realtek -y
+/usr/bin/apt-get -t stretch-backports install intel-microcode -y
 /usr/bin/apt-get -t stretch-backports install xserver-xorg-input-libinput -y
 /usr/bin/apt-get -t stretch-backports install xserver-xorg-video-intel -y
 /usr/bin/apt-get -t stretch-backports install xserver-xorg-input-wacom -y 
@@ -106,5 +106,34 @@ systemctl enable aptdistupgrade.timer
 # Let NetworkManager handle networking
 /bin/sed -e '/iface e\|allow/ s/^#*/#/' -i /etc/network/interfaces
 
-# Add plymouth
+# Add plymouth theme
+/usr/bin/apt-get -t stretch-backports install plymouth plymouth-themes
+/bin/echo "intel_agp
+drm
+i915 modeset=1" >> /etc/initramfs-tools/modules
+/usr/sbin/plymouth-set-default-theme -R solar
+
 ### Disable unneeded services
+systemctl disable accounts-daemon.service
+systemctl disable apparmor.service
+systemctl disable apt-daily.timer
+systemctl disable apt-daily-upgrade.timer
+systemctl disable autovt@.service
+systemctl disable avahi-daemon.service
+systemctl disable avahi-daemon.socket
+systemctl disable bluetooth.service
+systemctl disable console-setup.service
+systemctl disable irqbalance.service
+systemctl disable getty@.service
+systemctl disable keyboard-setup.service
+systemctl disable minissdpd.service
+systemctl disable ModemManager.service
+systemctl disable networking.service
+systemctl disable NetworkManager-wait-online.service
+systemctl disable openvpn.service
+systemctl disable pcscd.socket
+systemctl disable pppd-dns.service
+systemctl disable remote-fs.target
+systemctl disable rtkit-daemon.service
+systemctl disable unattended-upgrades.service
+systemctl disable uuidd.socket
