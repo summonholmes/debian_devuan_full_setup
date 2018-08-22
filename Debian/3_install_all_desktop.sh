@@ -105,7 +105,7 @@ systemctl enable aptdistupgrade.timer
 /bin/echo "xrandr --output DVI-I-1 --dpi 144x144" >> /usr/share/sddm/scripts/Xsetup
 
 # Add plymouth theme
-/usr/bin/apt-get -t stretch-backports install plymouth plymouth-themes
+/usr/bin/apt-get -t stretch-backports install plymouth plymouth-themes -y
 /bin/echo "drm
 nouveau modeset=1" >> /etc/initramfs-tools/modules
 /usr/sbin/plymouth-set-default-theme -R solar

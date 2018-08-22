@@ -107,7 +107,7 @@ systemctl enable aptdistupgrade.timer
 /bin/sed -e '/iface e\|allow/ s/^#*/#/' -i /etc/network/interfaces
 
 # Add plymouth theme
-/usr/bin/apt-get -t stretch-backports install plymouth plymouth-themes
+/usr/bin/apt-get -t stretch-backports install plymouth plymouth-themes -y
 /bin/echo "intel_agp
 drm
 i915 modeset=1" >> /etc/initramfs-tools/modules
