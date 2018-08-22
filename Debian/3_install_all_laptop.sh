@@ -10,7 +10,7 @@
 /usr/bin/apt-get -t stretch-backports install powerline fonts-firacode fonts-roboto fonts-liberation -y
 
 ## Install plugins
-/usr/bin/apt-get -t stretch-backports install bash-completion vim zip unzip unrar p7zip zsh build-essential git curl dirmngr screenfetch -y
+/usr/bin/apt-get -t stretch-backports install bash-completion vim zip unzip unrar p7zip zsh build-essential git curl htop dirmngr screenfetch -y
 
 ### Fully install KDE
 /usr/bin/apt-get -t stretch-backports install plasma-desktop plasma-nm sddm sddm-theme-breeze network-manager-openvpn kio-mtp plasma-applet-redshift-control -y
