@@ -64,7 +64,11 @@ cd /tmp
 wget -O atom.deb https://atom.io/download/deb
 /usr/bin/dpkg -i atom.deb
 /usr/bin/apt-get -t ascii-backports install -f -y
-/usr/bin/apt-get -t ascii-backports install r-recommended yapf3 python3-biopython jupyter-notebook python3-pandas python3-keyring python3-seaborn python3-sklearn
+/usr/bin/apt-get -t ascii-backports install r-recommended yapf3 python3-biopython jupyter-notebook python3-pandas python3-keyring python3-seaborn python3-sklearn -y
+cd /tmp
+/usr/bin/wget -O rstudio.deb https://download1.rstudio.org/rstudio-xenial-1.1.456-amd64.deb
+/usr/bin/dpkg -i rstudio.deb
+/usr/bin/apt-get -t ascii-backports install -f -y
 
 ### Install Dropbox
 cd /tmp
