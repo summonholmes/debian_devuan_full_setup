@@ -54,15 +54,20 @@ Exec=/opt/firefox/firefox --private-window %u" > /usr/share/applications/firefox
 /usr/bin/apt-get update
 /usr/bin/apt-get -t ascii-backports install papirus-icon-theme adapta-kde -y
 /usr/bin/git clone https://github.com/mustafaozhan/Breeze-Adapta.git && cd Breeze-Adapta && chmod +x install.sh && sh install.sh
+cd /tmp
 /usr/bin/wget -O adapta-gtk.deb "https://launchpad.net/~tista/+archive/ubuntu/adapta/+build/14213155/+files/adapta-gtk-theme_3.93.0.11-0ubuntu1~xenial1_all.deb"
 /usr/bin/dpkg -i adapta-gtk.deb
 /usr/bin/apt-get -t ascii-backports install -f -y
 
-### Install Miniconda
-# Let user install later
-/usr/bin/wget -O miniconda3.sh "https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh"
+### Install Atom & Data Science environment
+cd /tmp
+wget -O atom.deb https://atom.io/download/deb
+/usr/bin/dpkg -i atom.deb
+/usr/bin/apt-get -t ascii-backports install -f -y
+/usr/bin/apt-get -t ascii-backports install r-recommended yapf3 python3-biopython jupyter-notebook python3-pandas python3-keyring python3-seaborn python3-sklearn
 
 ### Install Dropbox
+cd /tmp
 /usr/bin/wget -O dropbox.deb "https://www.dropbox.com/download?dl=packages/ubuntu/dropbox_2015.10.28_amd64.deb"
 /usr/bin/dpkg -i dropbox.deb
 /usr/bin/apt-get -t ascii-backports install -f -y
@@ -98,3 +103,23 @@ apt-get dist-upgrade -y >> /var/log/aptdistupgrade.log 2>&1" > /etc/init.d/aptdi
 /bin/echo "#!/bin/sh
 # Xsetup - run as root before the login dialog appears
 xrandr --output DVI-I-1 --dpi 144x144" > /usr/share/sddm/scripts/Xsetup
+
+# Enable services
+/usr/sbin/update-rc.d aptdistupgrade defaults
+
+# Disable unneeded services
+/usr/sbin/update-rc.d apparmor remove
+/usr/sbin/update-rc.d avahi-daemon remove
+/usr/sbin/update-rc.d bluetooth remove
+/usr/sbin/update-rc.d irqbalance remove
+/usr/sbin/update-rc.d minissdpd remove
+/usr/sbin/update-rc.d networking remove
+/usr/sbin/update-rc.d ntp remove
+/usr/sbin/update-rc.d openvpn remove
+/usr/sbin/update-rc.d pcscd remove
+/usr/sbin/update-rc.d pppd-dns remove
+/usr/sbin/update-rc.d rc.local remove
+/usr/sbin/update-rc.d saned remove
+/usr/sbin/update-rc.d unattended-upgrades remove
+/usr/sbin/update-rc.d uuidd remove
+/usr/sbin/update-rc.d x11-common remove
