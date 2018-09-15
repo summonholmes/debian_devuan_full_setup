@@ -1,33 +1,33 @@
-#!/bin/sh
+ #!/bin/sh
 
 ### Install correct video and input drivers
-/usr/bin/apt-get -t ascii-backports install libpolkit-backend-elogind-1-0 -y
-/usr/bin/apt-get -t ascii-backports install sysv-rc-conf -y
-/usr/bin/apt-get -t ascii-backports install intel-microcode -y
-/usr/bin/apt-get -t ascii-backports install xserver-xorg-input-libinput -y
-/usr/bin/apt-get -t ascii-backports install xserver-xorg-video-intel -y
-/usr/bin/apt-get -t ascii-backports install xserver-xorg-input-wacom -y
+/usr/bin/apt-get install libpolkit-backend-elogind-1-0 -y
+/usr/bin/apt-get install sysv-rc-conf -y
+/usr/bin/apt-get install intel-microcode -y
+/usr/bin/apt-get install xserver-xorg-input-libinput -y
+/usr/bin/apt-get install xserver-xorg-video-intel -y
+/usr/bin/apt-get install xserver-xorg-input-wacom -y
 
 ### Install fonts
-/usr/bin/apt-get -t ascii-backports install powerline fonts-firacode fonts-roboto fonts-liberation -y
+/usr/bin/apt-get install powerline fonts-firacode fonts-roboto fonts-liberation -y
 
-## Install plugins
-/usr/bin/apt-get -t ascii-backports install ntp bash-completion vim zip unzip unrar p7zip zsh build-essential git curl htop dirmngr screenfetch -y
+## Install plugin
+/usr/bin/apt-get install ntp bash-completion vim zip unzip unrar p7zip zsh build-essential git curl htop dirmngr screenfetch -y
 
 ### Fully install KDE
-/usr/bin/apt-get -t ascii-backports install plasma-desktop plasma-nm sddm sddm-theme-breeze network-manager-openvpn kio-mtp plasma-applet-redshift-control -y
+/usr/bin/apt-get install plasma-desktop plasma-nm sddm sddm-theme-breeze network-manager-openvpn kio-mtp plasma-applet-redshift-control -y
 
 ### More KDE apps
-/usr/bin/apt-get -t ascii-backports install dolphin konsole kmail kate amarok gwenview ark kde-spectacle okular ffmpegthumbs -y
+/usr/bin/apt-get install dolphin konsole kmail kate amarok gwenview ark kde-spectacle okular ffmpegthumbs -y
 
 ### Install Devuan-native apps
-/usr/bin/apt-get -t ascii-backports install libreoffice libreoffice-kde smplayer smplayer-themes keepassx transmission-qt imagemagick -y
-/usr/bin/apt-get -t ascii-backports install gstreamer1.0-plugins-good gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly -y
+/usr/bin/apt-get install libreoffice libreoffice-kde smplayer smplayer-themes keepassx transmission-qt imagemagick -y
+/usr/bin/apt-get install gstreamer1.0-plugins-good gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly -y
 /usr/bin/dpkg --add-architecture i386
 /usr/bin/apt-get update
-/usr/bin/apt-get -t ascii-backports install steam wine -y
+/usr/bin/apt-get install wine -y
 # /usr/bin/apt-get -t ascii-backports qemu virt-manager -y
-/usr/bin/apt-get -t ascii-backports install tlp tp-smapi-dkms -y
+/usr/bin/apt-get install tlp tp-smapi-dkms -y
 
 ### Install Latest Firefox
 cd /tmp
@@ -58,76 +58,37 @@ Exec=/opt/firefox/firefox --private-window %u" > /usr/share/applications/firefox
 /bin/echo 'deb http://ppa.launchpad.net/papirus/papirus/ubuntu xenial main' > /etc/apt/sources.list.d/papirus-ppa.list
 /usr/bin/apt-key adv --recv-keys --keyserver keyserver.ubuntu.com E58A9D36647CAE7F
 /usr/bin/apt-get update
-/usr/bin/apt-get -t ascii-backports install papirus-icon-theme adapta-kde -y
+/usr/bin/apt-get install papirus-icon-theme adapta-kde -y
 /usr/bin/git clone https://github.com/mustafaozhan/Breeze-Adapta.git && cd Breeze-Adapta && chmod +x install.sh && sh install.sh
 cd /tmp
 /usr/bin/wget -O adapta-gtk.deb "https://launchpad.net/~tista/+archive/ubuntu/adapta/+build/14213155/+files/adapta-gtk-theme_3.93.0.11-0ubuntu1~xenial1_all.deb"
 /usr/bin/dpkg -i adapta-gtk.deb
-/usr/bin/apt-get -t ascii-backports install -f -y
+/usr/bin/apt-get install -f -y
 
 ### Install Atom & Data Science environment
 cd /tmp
 wget -O atom.deb https://atom.io/download/deb
 /usr/bin/dpkg -i atom.deb
-/usr/bin/apt-get -t ascii-backports install -f -y
-/usr/bin/apt-get -t ascii-backports install r-recommended yapf3 python3-biopython jupyter-notebook python3-pandas python3-keyring python3-seaborn python3-sklearn -y
+/usr/bin/apt-get install -f -y
+/usr/bin/apt-get install r-recommended yapf3 python3-biopython jupyter-notebook python3-pandas python3-keyring python3-seaborn python3-sklearn -y flake8
 cd /tmp
 /usr/bin/wget -O rstudio.deb https://download1.rstudio.org/rstudio-xenial-1.1.456-amd64.deb
 /usr/bin/dpkg -i rstudio.deb
-/usr/bin/apt-get -t ascii-backports install -f -y
+/usr/bin/apt-get install -f -y
+
 
 ### Install Dropbox
 cd /tmp
 /usr/bin/wget -O dropbox.deb "https://www.dropbox.com/download?dl=packages/ubuntu/dropbox_2015.10.28_amd64.deb"
 /usr/bin/dpkg -i dropbox.deb
-/usr/bin/apt-get -t ascii-backports install -f -y
+/usr/bin/apt-get install -f -y
 
 ### Post install tasks
 # Change pulseaudio defaults
 /bin/echo "flat-volumes = no" >> /etc/pulse/daemon.conf
 
-# Add distupgrade script
-/bin/echo "#!/bin/sh
-### BEGIN INIT INFO
-# Provides:          aptdistupgrade
-# Required-Start:    $remote_fs network-manager
-# Required-Stop:     $remote_fs network-manager
-# Should-Start:      $syslog
-# Should-Stop:       $syslog
-# Default-Start:     2 3 4 5
-# Default-Stop:      0 1 6
-# Short-Description: aptdistupgrade
-# Description:       Daemon for automatically updating system
-### END INIT INFO
-sleep 90
-echo 2018/08/19 > /var/log/aptdistupgrade.log 2>&1
-echo 04:27:17 >> /var/log/aptdistupgrade.log 2>&1
-apt-get update >> /var/log/aptdistupgrade.log 2>&1
-apt-get dist-upgrade -y >> /var/log/aptdistupgrade.log 2>&1" > /etc/init.d/aptdistupgrade
-/bin/chmod +x /etc/init.d/aptdistupgrade
-
 # Let NetworkManager handle networking
 /bin/sed -e '/iface e\|allow/ s/^#*/#/' -i /etc/network/interfaces
-
-# Add tablet script
-/bin/echo "#!/bin/sh
-### BEGIN INIT INFO
-# Provides:          isdv4
-# Required-Start:    $remote_fs $syslog
-# Required-Stop:     $remote_fs $syslog
-# Should-Start:      $syslog
-# Should-Stop:       $syslog
-# Default-Start:     2 3 4 5
-# Default-Stop:      0 1 6
-# Short-Description: Start isdv4
-# Description:       Script to start isdv4
-### END INIT INFO
-/usr/bin/isdv4-serial-inputattach /dev/ttyS0 > /dev/null 2>&1 &" >> /etc/init.d/isdv4
-/bin/chmod +x /etc/init.d/isdv4
-
-# Enable services
-/usr/sbin/update-rc.d aptdistupgrade defaults
-/usr/sbin/update-rc.d isdv4 defaults
 
 # Disable unneeded services
 /usr/sbin/update-rc.d apparmor remove
@@ -140,8 +101,11 @@ apt-get dist-upgrade -y >> /var/log/aptdistupgrade.log 2>&1" > /etc/init.d/aptdi
 /usr/sbin/update-rc.d openvpn remove
 /usr/sbin/update-rc.d pcscd remove
 /usr/sbin/update-rc.d pppd-dns remove
-/usr/sbin/update-rc.d rc.local remove
 /usr/sbin/update-rc.d saned remove
+/usr/sbin/update-rc.d sddm remove
 /usr/sbin/update-rc.d unattended-upgrades remove
 /usr/sbin/update-rc.d uuidd remove
 /usr/sbin/update-rc.d x11-common remove
+#/sbin/poweroff
+### Remove obsolete
+/usr/bin/apt-get autoremove -y

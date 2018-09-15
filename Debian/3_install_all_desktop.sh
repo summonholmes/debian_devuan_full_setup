@@ -1,25 +1,24 @@
  #!/bin/sh
 
 ### Install correct video and input drivers
-/usr/bin/apt-get -t stretch-backports install amd64-microcode firmware-realtek -y
-/usr/bin/apt-get -t stretch-backports install xserver-xorg-input-libinput -y
-/usr/bin/apt-get -t stretch-backports install xserver-xorg-video-nouveau -y
+/usr/bin/apt-get install xserver-xorg-input-libinput -y
+/usr/bin/apt-get install xserver-xorg-video-nouveau -y
 
 ### Install fonts
-/usr/bin/apt-get -t stretch-backports install powerline fonts-firacode fonts-roboto fonts-liberation -y
+/usr/bin/apt-get install powerline fonts-firacode fonts-roboto fonts-liberation -y
 
 ## Install plugins
-/usr/bin/apt-get -t stretch-backports install bash-completion vim zip unzip unrar p7zip zsh build-essential git curl htop dirmngr screenfetch -y
+/usr/bin/apt-get install bash-completion vim zip unzip unrar p7zip zsh build-essential git curl htop dirmngr screenfetch -y
 
 ### Fully install KDE
-/usr/bin/apt-get -t stretch-backports install plasma-desktop plasma-nm sddm sddm-theme-breeze network-manager-openvpn kio-mtp plasma-applet-redshift-control -y
+/usr/bin/apt-get install plasma-desktop plasma-nm sddm sddm-theme-breeze network-manager-openvpn kio-mtp plasma-applet-redshift-control -y
 
 ### More KDE apps
-/usr/bin/apt-get -t stretch-backports install dolphin konsole kmail kate amarok gwenview ark kde-spectacle okular ffmpegthumbs -y
+/usr/bin/apt-get install dolphin konsole kmail kate amarok gwenview ark kde-spectacle okular ffmpegthumbs -y
 
 ### Install Devuan-native apps
-/usr/bin/apt-get -t stretch-backports install libreoffice libreoffice-kde smplayer smplayer-themes keepassx transmission-qt imagemagick -y
-/usr/bin/apt-get -t stretch-backports install gstreamer1.0-plugins-good gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly -y
+/usr/bin/apt-get install libreoffice libreoffice-kde smplayer smplayer-themes keepassx transmission-qt imagemagick -y
+/usr/bin/apt-get install gstreamer1.0-plugins-good gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly -y
 
 ### Install Latest Firefox
 cd /tmp
@@ -50,20 +49,29 @@ Exec=/opt/firefox/firefox --private-window %u" > /usr/share/applications/firefox
 /bin/echo 'deb http://ppa.launchpad.net/papirus/papirus/ubuntu xenial main' > /etc/apt/sources.list.d/papirus-ppa.list
 /usr/bin/apt-key adv --recv-keys --keyserver keyserver.ubuntu.com E58A9D36647CAE7F
 /usr/bin/apt-get update
-/usr/bin/apt-get -t stretch-backports install papirus-icon-theme adapta-kde -y
+/usr/bin/apt-get install papirus-icon-theme adapta-kde -y
 /usr/bin/git clone https://github.com/mustafaozhan/Breeze-Adapta.git && cd Breeze-Adapta && chmod +x install.sh && sh install.sh
+cd /tmp
 /usr/bin/wget -O adapta-gtk.deb "https://launchpad.net/~tista/+archive/ubuntu/adapta/+build/14213155/+files/adapta-gtk-theme_3.93.0.11-0ubuntu1~xenial1_all.deb"
 /usr/bin/dpkg -i adapta-gtk.deb
-/usr/bin/apt-get -t stretch-backports install -f -y
+/usr/bin/apt-get install -f -y
 
-### Install Miniconda
-# Let user install later
-/usr/bin/wget -O miniconda3.sh "https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh"
+### Install Data Science
+cd /tmp
+wget -O atom.deb https://atom.io/download/deb
+/usr/bin/dpkg -i atom.deb
+/usr/bin/apt-get install -f -y
+/usr/bin/apt-get install r-recommended yapf3 python3-biopython jupyter-notebook python3-pandas python3-keyring python3-seaborn python3-sklearn -y
+cd /tmp
+/usr/bin/wget -O rstudio.deb https://download1.rstudio.org/rstudio-xenial-1.1.456-amd64.deb
+/usr/bin/dpkg -i rstudio.deb
+/usr/bin/apt-get install -f -y
 
 ### Install Dropbox
+cd /tmp
 /usr/bin/wget -O dropbox.deb "https://www.dropbox.com/download?dl=packages/ubuntu/dropbox_2015.10.28_amd64.deb"
 /usr/bin/dpkg -i dropbox.deb
-/usr/bin/apt-get -t stretch-backports install -f -y
+/usr/bin/apt-get install -f -y
 
 ### Post install tasks
 # Fix annoying systemd & pulseaudio defaults
@@ -105,7 +113,7 @@ systemctl enable aptdistupgrade.timer
 /bin/echo "xrandr --output DVI-I-1 --dpi 144x144" >> /usr/share/sddm/scripts/Xsetup
 
 # Add plymouth theme
-/usr/bin/apt-get -t stretch-backports install plymouth plymouth-themes -y
+/usr/bin/apt-get install plymouth plymouth-themes -y
 /bin/echo "drm
 nouveau modeset=1" >> /etc/initramfs-tools/modules
 /usr/sbin/plymouth-set-default-theme -R solar
@@ -130,6 +138,8 @@ systemctl disable openvpn.service
 systemctl disable pcscd.socket
 systemctl disable pppd-dns.service
 systemctl disable remote-fs.target
+systemctl disable rsync.service
 systemctl disable rtkit-daemon.service
 systemctl disable unattended-upgrades.service
 systemctl disable uuidd.socket
+/usr/bin/apt-get autoremove -y
