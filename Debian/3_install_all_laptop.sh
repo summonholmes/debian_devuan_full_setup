@@ -104,8 +104,8 @@ WantedBy=timers.target" > /etc/systemd/system/aptdistupgrade.timer
 
 # Create full upgrade shell script
 /bin/echo "#!/bin/sh
-echo 2018/08/19 > /var/log/aptdistupgrade.log 2>&1
-echo 04:27:17 >> /var/log/aptdistupgrade.log 2>&1
+echo `date +%D` > /var/log/aptdistupgrade.log 2>&1
+echo `date +%I:%M:%S%p` >> /var/log/aptdistupgrade.log 2>&1
 apt-get update >> /var/log/aptdistupgrade.log 2>&1
 apt-get dist-upgrade -y >> /var/log/aptdistupgrade.log 2>&1" > /etc/systemd/system/aptdistupgrade.sh
 /bin/chmod +x /etc/systemd/system/aptdistupgrade.sh
