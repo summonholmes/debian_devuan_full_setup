@@ -14,53 +14,14 @@
 /usr/bin/apt-get install plasma-desktop plasma-nm sddm sddm-theme-breeze network-manager-openvpn kio-mtp plasma-applet-redshift-control -y
 
 ### More KDE apps
-/usr/bin/apt-get install dolphin konsole kmail kate amarok gwenview ark kde-spectacle okular ffmpegthumbs -y
+/usr/bin/apt-get install dolphin konsole kate amarok gwenview ark kde-spectacle okular ffmpegthumbs -y
 
 ### Install Devuan-native apps
 /usr/bin/apt-get install libreoffice libreoffice-kde smplayer smplayer-themes keepassx transmission-qt imagemagick -y
 /usr/bin/apt-get install gstreamer1.0-plugins-good gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly -y
-
-### Install Latest Firefox
-cd /tmp
-/usr/bin/wget -O FirefoxSetup.tar.bz2 "https://download.mozilla.org/?product=firefox-latest&os=linux64&lang=en-US"
-/bin/tar jxvf FirefoxSetup.tar.bz2
-/bin/mv firefox /opt/firefox
-/bin/echo "[Desktop Entry]
-Version=1.0
-Name=Firefox
-GenericName=Web Browser
-Exec=/opt/firefox/firefox %u
-Icon=firefox
-Terminal=false
-Type=Application
-MimeType=text/html;text/xml;application/xhtml+xml;application/vnd.mozilla.xul+xml;text/mml;x-scheme-handler/http;x-scheme-handler/https;
-StartupNotify=true
-Categories=Network;WebBrowser;
-Keywords=web;browser;internet;
-Actions=new-window;new-private-window;
-[Desktop Action new-window]
-Name=New Window
-Exec=/opt/firefox/firefox --new-window %u
-[Desktop Action new-private-window]
-Name=New Private Window
-Exec=/opt/firefox/firefox --private-window %u" > /usr/share/applications/firefox.desktop
-
-### Install Papirus Icon theme & Adapta KDE
-/bin/echo 'deb http://ppa.launchpad.net/papirus/papirus/ubuntu xenial main' > /etc/apt/sources.list.d/papirus-ppa.list
-/usr/bin/apt-key adv --recv-keys --keyserver keyserver.ubuntu.com E58A9D36647CAE7F
-/usr/bin/apt-get update
-/usr/bin/apt-get install papirus-icon-theme adapta-kde -y
-/usr/bin/git clone https://github.com/mustafaozhan/Breeze-Adapta.git && cd Breeze-Adapta && chmod +x install.sh && sh install.sh
-cd /tmp
-/usr/bin/wget -O adapta-gtk.deb "https://launchpad.net/~tista/+archive/ubuntu/adapta/+build/14213155/+files/adapta-gtk-theme_3.93.0.11-0ubuntu1~xenial1_all.deb"
-/usr/bin/dpkg -i adapta-gtk.deb
-/usr/bin/apt-get install -f -y
+/usr/bin/apt-get firefox-esr thunderbird -y
 
 ### Install Data Science
-cd /tmp
-wget -O atom.deb https://atom.io/download/deb
-/usr/bin/dpkg -i atom.deb
-/usr/bin/apt-get install -f -y
 /usr/bin/apt-get install r-recommended yapf3 python3-biopython jupyter-notebook python3-pandas python3-keyring python3-seaborn python3-sklearn -y
 cd /tmp
 /usr/bin/wget -O rstudio.deb https://download1.rstudio.org/rstudio-xenial-1.1.456-amd64.deb
@@ -74,6 +35,11 @@ cd /tmp
 /usr/bin/apt-get install -f -y
 
 ### Post install tasks
+# Flat icons
+cd /tmp
+git clone https://github.com/daniruiz/flat-remix
+mv flat-remix/Flat-Remix* /usr/share/icons/
+
 # Fix annoying systemd & pulseaudio defaults
 /bin/echo "DefaultTimeoutStartSec=10s
 DefaultTimeoutStopSec=10s" >> /etc/systemd/system.conf
@@ -93,6 +59,8 @@ Description=Run aptdistupgrade on boot
 
 [Timer]
 OnBootSec=2min
+OnUnitActiveSec=1h
+Persistent=true
 
 [Install]
 WantedBy=timers.target" > /etc/systemd/system/aptdistupgrade.timer
