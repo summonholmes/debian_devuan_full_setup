@@ -30,18 +30,18 @@ apt-get install dolphin konsole kate amarok gwenview ark kde-spectacle \
 apt-get install libreoffice libreoffice-kde smplayer smplayer-themes keepassx \
     transmission-qt imagemagick firefox-esr thunderbird -y
 
-# Install miniconda3
+# Move to /tmp directory for software outside of Debian repos
 cd /tmp
+
+# Install miniconda3
 wget -O miniconda.sh "https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh"
 runuser -l summonholmes -c './miniconda.sh -b -p /home/summonholmes/.local/miniconda3'
 
 # Install Dropbox
-cd /tmp
 wget -O dropbox.deb "https://www.dropbox.com/download?dl=packages/ubuntu/dropbox_2015.10.28_amd64.deb"
 apt install ./dropbox.deb -y
 
 # Flat icons
-cd /tmp
 git clone https://github.com/daniruiz/flat-remix
 mv flat-remix/Flat-Remix* /usr/share/icons/
 
@@ -97,7 +97,6 @@ i915 modeset=1" >> /etc/initramfs-tools/modules
 plymouth-set-default-theme -R solar
 
 # Grub configuration
-cd /tmp
 git clone https://github.com/summonholmes/unix-shell-scripting.git
 cp unix-shell-scripting/GNULinux/Debian\ Grub/10_linux /etc/grub.d/11_linux
 cp unix-shell-scripting/GNULinux/Debian\ Grub/30_os-prober /etc/grub.d/10_os-prober
@@ -118,8 +117,8 @@ sed -i '/GRUB_CMDLINE_LINUX_/c\GRUB_CMDLINE_LINUX_DEFAULT="quiet splash"' \
 update-grub
 
 # Copy Firefox and Thunderbird preferences to home
-cp unix-shell-scripting/GNULinux/firefox_prefs.js ~
-cp unix-shell-scripting/GNULinux/thunderbird_prefs.js ~
+runuser -l summonholmes -c 'cp unix-shell-scripting/GNULinux/firefox_prefs.js ~'
+runuser -l summonholmes -c 'cp unix-shell-scripting/GNULinux/thunderbird_prefs.js ~'
 
 ### Disable unneeded services
 systemctl disable accounts-daemon.service
