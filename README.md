@@ -21,9 +21,13 @@ $ sudo reboot
 ```
 
 #### b. Update
+```
 $ sh 2_update.sh
 $ sudo reboot
+```
 
 #### c. Install All
+```
 $ sh 3_install_all.sh
 $ sudo reboot
+```
