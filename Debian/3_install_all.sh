@@ -24,7 +24,7 @@ apt-get -t stretch-backports install dolphin konsole kate amarok gwenview ark kd
     okular ffmpegthumbs -y
 
 # Non KDE apps
-apt-get -t stretch-backports install libreoffice libreoffice-kde smplayer smplayer-themes keepassx \
+apt-get -t stretch-backports install libreoffice libreoffice-kde smplayer smplayer-themes keepassxc \
     transmission-qt imagemagick firefox-esr thunderbird -y
 
 # Install miniconda3
