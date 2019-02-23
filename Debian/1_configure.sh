@@ -1,9 +1,6 @@
 #!/bin/sh
 # Run as root
 
-# Ensure the PATH variable is correct or else this could fail
-source /etc/profile
-
 # Create a tmpfs
 cp /usr/share/systemd/tmp.mount /etc/systemd/system/
 cp /usr/share/doc/util-linux/examples/fstrim.* /etc/systemd/system/
@@ -28,7 +25,7 @@ sed -i '/kernel.sysrq/s/^#//g' /etc/sysctl.conf
 echo "blacklist pcspkr" > /etc/modprobe.d/pcspkr.conf
 
 # Disable nouveau
-echo "blacklist nouveau" > /etc/modprobe.d/nouveau.conf
+# echo "blacklist nouveau" > /etc/modprobe.d/nouveau.conf
 
 # Reboot
 reboot
