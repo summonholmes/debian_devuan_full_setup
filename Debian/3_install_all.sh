@@ -1,47 +1,47 @@
 #!/bin/sh
 # Run as root
 
-# Ensure the PATH variable is correct or else this could fail
-source /etc/profile
-
 # Install correct video and input drivers
-apt-get install xserver-xorg-input-libinput xserver-xorg-video-intel -y
+apt-get -t stretch-backports install xserver-xorg-input-libinput xserver-xorg-video-intel -y
 
 # Install fonts
-apt-get install powerline fonts-firacode fonts-roboto fonts-liberation -y
+apt-get -t stretch-backports install powerline fonts-firacode fonts-roboto fonts-liberation -y
 
 # Install lower level utils
-apt-get install bash-completion vim zip unzip unrar p7zip zsh build-essential \
+apt-get -t stretch-backports install bash-completion vim zip unzip unrar p7zip zsh build-essential \
     git curl htop dirmngr screenfetch tlp -y
 
 # Instll audio codecs
-apt-get install gstreamer1.0-plugins-good gstreamer1.0-plugins-bad \
+apt-get -t stretch-backports install gstreamer1.0-plugins-good gstreamer1.0-plugins-bad \
     gstreamer1.0-plugins-ugly -y
 
 # Install KDE desktop
-apt-get install plasma-desktop plasma-nm sddm sddm-theme-breeze \
+apt-get -t stretch-backports install plasma-desktop plasma-nm sddm sddm-theme-breeze \
     network-manager-openvpn kio-mtp plasma-applet-redshift-control -y
 
 # More KDE apps
-apt-get install dolphin konsole kate amarok gwenview ark kde-spectacle \
+apt-get -t stretch-backports install dolphin konsole kate amarok gwenview ark kde-spectacle \
     okular ffmpegthumbs -y
 
 # Non KDE apps
-apt-get install libreoffice libreoffice-kde smplayer smplayer-themes keepassx \
+apt-get -t stretch-backports install libreoffice libreoffice-kde smplayer smplayer-themes keepassx \
     transmission-qt imagemagick firefox-esr thunderbird -y
 
-# Move to /tmp directory for software outside of Debian repos
-cd /tmp
-
 # Install miniconda3
-wget -O miniconda.sh "https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh"
-runuser -l summonholmes -c './miniconda.sh -b -p /home/summonholmes/.local/miniconda3'
+wget -O /home/summonholmes/miniconda.sh "https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh"
 
 # Install Dropbox
+cd /tmp
 wget -O dropbox.deb "https://www.dropbox.com/download?dl=packages/ubuntu/dropbox_2015.10.28_amd64.deb"
 apt install ./dropbox.deb -y
 
+# Install VSCode
+cd /tmp
+wget -O code.deb "https://go.microsoft.com/fwlink/?LinkID=760868"
+apt install ./code.deb -y
+
 # Flat icons
+cd /tmp
 git clone https://github.com/daniruiz/flat-remix
 mv flat-remix/Flat-Remix* /usr/share/icons/
 
@@ -89,36 +89,29 @@ sed -e '/iface e\|allow/ s/^#*/#/' -i /etc/network/interfaces
 # Set sddm hidpi settings
 echo "xrandr --output eDP-1 --dpi 240x240" >> /usr/share/sddm/scripts/Xsetup
 
-# Enable plymouth
-apt-get install plymouth plymouth-themes -y
-echo "intel_agp
-drm
-i915 modeset=1" >> /etc/initramfs-tools/modules
-plymouth-set-default-theme -R solar
-
 # Grub configuration
-git clone https://github.com/summonholmes/unix-shell-scripting.git
-cp unix-shell-scripting/GNULinux/Debian\ Grub/10_linux /etc/grub.d/11_linux
-cp unix-shell-scripting/GNULinux/Debian\ Grub/30_os-prober /etc/grub.d/10_os-prober
-cp unix-shell-scripting/GNULinux/Debian\ Grub/future.png /boot/grub/
-cp unix-shell-scripting/GNULinux/Debian\ Grub/fira.pf2 /boot/grub/
+cd /tmp
+git clone https://github.com/summonholmes/config-dump.git
+cp config-dump/GNULinux/Debian/Grub/10_linux /etc/grub.d/11_linux
+cp config-dump/GNULinux/Debian/Grub/30_os-prober /etc/grub.d/31_os-prober
+cp config-dump/GNULinux/Debian/Grub/future.png /boot/grub/
 chmod -x /etc/grub.d/10_linux
 chmod -x /etc/grub.d/30_os-prober
 chmod -x /etc/grub.d/30_uefi-firmware
 chmod +x /etc/grub.d/11_linux
-chmod +x /etc/grub.d/10_os-prober
+chmod +x /etc/grub.d/31_os-prober
 
 # Grub defaults
 echo "GRUB_GFXMODE=3840x2160" >> /etc/default/grub
 echo "GRUB_BACKGROUND=/boot/grub/future.png" >> /etc/default/grub
-echo "GRUB_FONT=/boot/grub/fira.pf2" >> /etc/default/grub
 sed -i '/GRUB_CMDLINE_LINUX_/c\GRUB_CMDLINE_LINUX_DEFAULT="quiet splash"' \
     /etc/default/grub
 update-grub
 
 # Copy Firefox and Thunderbird preferences to home
-runuser -l summonholmes -c 'cp unix-shell-scripting/GNULinux/firefox_prefs.js ~'
-runuser -l summonholmes -c 'cp unix-shell-scripting/GNULinux/thunderbird_prefs.js ~'
+cd /tmp
+cp config-dump/FirefoxThunderbird/firefox_prefs.js /home/summonholmes/
+cp config-dump/FirefoxThunderbird/thunderbird_prefs.js /home/summonholmes/
 
 ### Disable unneeded services
 systemctl disable accounts-daemon.service
@@ -146,6 +139,7 @@ systemctl disable unattended-upgrades.service
 systemctl disable uuidd.socket
 
 # Clean unused packages
+apt-get -t stretch-backports dist-upgrade -y
 apt-get autoremove -y
 
 # Reboot
