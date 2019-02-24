@@ -22,17 +22,14 @@ $ sudo apt-get install git -y
 $ git clone https://github.com/summonholmes/debian_full_setup.git
 $ cd debian_full_setup
 $ sudo sh -c "./1_configure.sh"
-$ sudo reboot
 ```
 
 #### b. Update
 ```
 $ sudo sh -c "./2_update.sh"
-$ sudo reboot
 ```
 
 #### c. Install All
 ```
 $ sudo sh -c "./3_install_all.sh"
-$ sudo reboot
 ```
