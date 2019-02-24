@@ -2,14 +2,16 @@
 # Run as root
 
 # Install correct video and input drivers
-apt-get -t stretch-backports install xserver-xorg-input-libinput xserver-xorg-video-intel -y
+# apt-get -t stretch-backports install xserver-xorg-input-libinput xserver-xorg-video-intel -y
+apt-get -t stretch-backports install xserver-xorg-input-libinput xserver-xorg-video-nouveau -y
 
 # Install fonts
 apt-get -t stretch-backports install powerline fonts-firacode fonts-roboto fonts-liberation -y
 
 # Install lower level utils
 apt-get -t stretch-backports install bash-completion vim zip unzip unrar p7zip zsh build-essential \
-    git curl htop dirmngr screenfetch tlp -y
+    git curl htop dirmngr screenfetch -y
+# apt-get -t stretch-backports install tlp -y
 
 # Instll audio codecs
 apt-get -t stretch-backports install gstreamer1.0-plugins-good gstreamer1.0-plugins-bad \
@@ -87,7 +89,10 @@ systemctl enable aptdistupgrade.timer
 sed -e '/iface e\|allow/ s/^#*/#/' -i /etc/network/interfaces
 
 # Set sddm hidpi settings
-echo "xrandr --output eDP-1 --dpi 240x240" >> /usr/share/sddm/scripts/Xsetup
+# echo "xrandr --output eDP-1 --dpi 240" >> /usr/share/sddm/scripts/Xsetup
+echo 'xrandr --output DVI-I-1 --dpi 144 --set underscan on \\                                            ✔  107  21:18:41
+    --set "underscan vborder" 0 \\
+    --set "underscan hborder" 8'
 
 # Grub configuration
 cd /tmp
@@ -102,9 +107,11 @@ chmod +x /etc/grub.d/11_linux
 chmod +x /etc/grub.d/31_os-prober
 
 # Grub defaults
-echo "GRUB_GFXMODE=3840x2160" >> /etc/default/grub
+# echo "GRUB_GFXMODE=3840x2160" >> /etc/default/grub
+echo "GRUB_GFXMODE=1920x1080" >> /etc/default/grub
 echo "GRUB_BACKGROUND=/boot/grub/future.png" >> /etc/default/grub
-sed -i '/GRUB_CMDLINE_LINUX_/c\GRUB_CMDLINE_LINUX_DEFAULT="quiet splash"' \
+sed -i '/GRUB_CMDLINE_LINUX_/c\GRUB_CMDLINE_LINUX_DEFAULT="quiet loglevel=0 \\\
+    vga=current vt.global_cursor_default=0 fastboot"' \
     /etc/default/grub
 update-grub
 
