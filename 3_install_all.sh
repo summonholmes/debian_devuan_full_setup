@@ -106,6 +106,7 @@ chmod -x /etc/grub.d/30_uefi-firmware
 chmod +x /etc/grub.d/11_linux
 chmod +x /etc/grub.d/31_os-prober
 
+apt-get -t stretch-backports dist-upgrade -y
 # Grub defaults
 # echo "GRUB_GFXMODE=3840x2160" >> /etc/default/grub
 echo "GRUB_GFXMODE=1920x1080" >> /etc/default/grub
@@ -146,8 +147,4 @@ systemctl disable unattended-upgrades.service
 systemctl disable uuidd.socket
 
 # Clean unused packages
-apt-get -t stretch-backports dist-upgrade -y
 apt-get autoremove -y
-
-# Reboot
-reboot

@@ -26,6 +26,3 @@ echo "blacklist pcspkr" > /etc/modprobe.d/pcspkr.conf
 
 # Disable nouveau
 # echo "blacklist nouveau" > /etc/modprobe.d/nouveau.conf
-
-# Reboot
-reboot
