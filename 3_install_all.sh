@@ -90,7 +90,7 @@ sed -e '/iface e\|allow/ s/^#*/#/' -i /etc/network/interfaces
 
 # Set sddm hidpi settings
 # echo "xrandr --output eDP-1 --dpi 240" >> /usr/share/sddm/scripts/Xsetup
-echo 'xrandr --output DVI-I-1 --dpi 144 --set underscan on \\                                            ✔  107  21:18:41
+echo 'xrandr --output DVI-I-1 --dpi 144 --set underscan on \\
     --set "underscan vborder" 0 \\
     --set "underscan hborder" 8'
 
