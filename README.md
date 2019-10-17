@@ -10,7 +10,8 @@ I've been using Debian Stable with KDE and backports for several years now, and 
 These are what I use.  You'll likely need to get your hands dirty and change these where needed.  For instance, you should know your video driver in advance (intel, amd, nouveau, nvidia, etc).  Reboot after running each script in order.
 
 ## Todo
-Add KDE config files to the 
+* Add KDE config files to the process
+* Fully test on Buster
 
 ### 1. At the tasksel prompt during install, uncheck everything.
 
