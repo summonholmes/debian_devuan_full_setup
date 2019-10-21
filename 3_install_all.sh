@@ -10,7 +10,7 @@
 # xserver-xorg-video-nouveau -y # For AMD machine temporarily
 apt-get -t buster-backports install xserver-xorg-input-libinput xserver-xorg-video-intel \
 fonts-firacode fonts-roboto fonts-liberation bash-completion vim zip unzip unrar p7zip zsh \ 
-build-essential git curl htop screenfetch gstreamer1.0-plugins-good gstreamer1.0-plugins-bad \
+build-essential git curl wget htop screenfetch gstreamer1.0-plugins-good gstreamer1.0-plugins-bad \
 gstreamer1.0-plugins-ugly plasma-desktop plasma-nm sddm sddm-theme-breeze \
 network-manager-openvpn kio-extras plasma-applet-redshift-control dolphin konsole \
 kate clementine gwenview ark kde-spectacle okular ffmpegthumbs libreoffice libreoffice-kde5 \
