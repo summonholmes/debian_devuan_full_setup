@@ -59,8 +59,7 @@ Description=Run aptdistupgrade
 
 [Service]
 Type=oneshot
-ExecStart=/etc/systemd/system/aptdistupgrade.sh
-" > /etc/systemd/system/aptdistupgrade.service
+ExecStart=/etc/systemd/system/aptdistupgrade.sh" > /etc/systemd/system/aptdistupgrade.service
 
 # Timer
 echo "[Unit]
@@ -70,15 +69,13 @@ Description=Run aptdistupgrade on boot
 OnBootSec=5min
 
 [Install]
-WantedBy=timers.target
-" > /etc/systemd/system/aptdistupgrade.timer
+WantedBy=timers.target" > /etc/systemd/system/aptdistupgrade.timer
 
 # Shell script
 echo "#!/bin/sh
 echo \`date\` > /var/log/aptdistupgrade.log 2>&1
 apt-get update >> /var/log/aptdistupgrade.log 2>&1
-apt-get dist-upgrade -y >> /var/log/aptdistupgrade.log 2>&1
-" > /etc/systemd/system/aptdistupgrade.sh
+apt-get dist-upgrade -y >> /var/log/aptdistupgrade.log 2>&1" > /etc/systemd/system/aptdistupgrade.sh
 chmod +x /etc/systemd/system/aptdistupgrade.sh
 
 ###################################
@@ -101,8 +98,7 @@ Description=Run powertop regularly
 OnUnitActiveSec=2min
 
 [Install]
-WantedBy=timers.target
-" > /etc/systemd/system/powertop.timer
+WantedBy=timers.target" > /etc/systemd/system/powertop.timer
 
 ################################
 # Enable to upgrade timers above
@@ -176,8 +172,9 @@ systemctl disable apt-daily.timer
 systemctl disable apt-daily-upgrade.timer
 systemctl disable autovt@.service
 systemctl disable avahi-daemon.service
-systemctl disable bluetooth.service
 systemctl disable console-setup.service
+systemctl disable e2scrub_all.timer
+systemctl disable e2scrub_reap.service
 systemctl disable irqbalance.service
 systemctl disable getty@.service
 systemctl disable keyboard-setup.service
@@ -189,10 +186,11 @@ systemctl disable openvpn.service
 systemctl disable pcscd.socket
 systemctl disable pppd-dns.service
 systemctl disable remote-fs.target
-systemctl disable rsync.service
 systemctl disable rtkit-daemon.service
+systemctl disable udisks2.service
 systemctl disable unattended-upgrades.service
 systemctl disable uuidd.socket
+systemctl disable wpa_supplicant.service
 
 ##################################################
 # Reboot only when everything is confirmed working
