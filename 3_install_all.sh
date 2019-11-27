@@ -9,13 +9,17 @@
 # xserver-xorg-input-libinput \
 # xserver-xorg-video-nouveau -y # For AMD machine temporarily
 apt-get -t buster-backports install xserver-xorg-input-libinput xserver-xorg-video-intel \
-fonts-firacode fonts-roboto fonts-liberation bash-completion vim zip unzip unrar p7zip zsh \ 
+fonts-firacode fonts-roboto fonts-liberation bash-completion vim zip unzip unrar p7zip zsh \
 build-essential git curl wget htop screenfetch gstreamer1.0-plugins-good gstreamer1.0-plugins-bad \
 gstreamer1.0-plugins-ugly plasma-desktop plasma-nm sddm sddm-theme-breeze \
 network-manager-openvpn kio-extras plasma-applet-redshift-control dolphin konsole \
 kate clementine gwenview ark kde-spectacle okular ffmpegthumbs libreoffice libreoffice-kde5 \
 smplayer smplayer-themes keepassxc transmission-qt imagemagick firefox-esr thunderbird \
-bleachbit plymouth plymouth-themes plymouth-theme-breeze -y
+bleachbit plymouth plymouth-themes plymouth-theme-breeze pulseaudio-module-bluetooth \
+nautilus-dropbox -y
+
+# For the laptop
+# apt-get -t buster-backports install tlp powertop
 
 ####################
 # Install miniconda3
@@ -23,18 +27,11 @@ bleachbit plymouth plymouth-themes plymouth-theme-breeze -y
 cd /tmp
 wget -O /tmp/miniconda.sh "https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh"
 su -c "sh ./miniconda.sh -b -p $HOME/.local/miniconda3" -s \
-    /bin/bash summonholmes  # Your username replaces 'summonholmes'
+/bin/bash summonholmes  # Your username replaces 'summonholmes'
 su -c "$HOME/.local/miniconda3/bin/conda install pandas flake8 jupyter termcolor \\\
-    scikit-learn scipy yapf virtualenv plotly && conda update --all -y && \\\
-    conda clean --all -y" -s \
-    /bin/bash summonholmes
-
-#################
-# Install Dropbox
-#################
-cd /tmp
-wget -O dropbox.deb "https://www.dropbox.com/download?dl=packages/ubuntu/dropbox_2015.10.28_amd64.deb"
-apt install ./dropbox.deb -y
+scikit-learn scipy yapf virtualenv plotly && conda update --all -y && \\\
+conda clean --all -y" -s \
+/bin/bash summonholmes
 
 ################
 # Install VSCode
@@ -42,13 +39,6 @@ apt install ./dropbox.deb -y
 cd /tmp
 wget -O code.deb "https://go.microsoft.com/fwlink/?LinkID=760868"
 apt install ./code.deb -y
-
-############################################
-# Fix annoying systemd & pulseaudio defaults
-############################################
-echo "DefaultTimeoutStartSec=10s
-DefaultTimeoutStopSec=10s" >> /etc/systemd/system.conf
-echo "flat-volumes = no" >> /etc/pulse/daemon.conf
 
 ######################################################
 # Create full upgrade service, timer, and shell script
@@ -72,10 +62,10 @@ OnBootSec=5min
 WantedBy=timers.target" > /etc/systemd/system/aptdistupgrade.timer
 
 # Shell script
-echo "#!/bin/sh
+echo '#!/bin/sh
 echo \`date\` > /var/log/aptdistupgrade.log 2>&1
 apt-get update >> /var/log/aptdistupgrade.log 2>&1
-apt-get dist-upgrade -y >> /var/log/aptdistupgrade.log 2>&1" > /etc/systemd/system/aptdistupgrade.sh
+apt-get dist-upgrade -y >> /var/log/aptdistupgrade.log 2>&1' > /etc/systemd/system/aptdistupgrade.sh
 chmod +x /etc/systemd/system/aptdistupgrade.sh
 
 ###################################
@@ -87,14 +77,14 @@ Description=Run powertop
 
 [Service]
 Type=oneshot
-ExecStart=/usr/sbin/powertop --auto-tune
-" > /etc/systemd/system/powertop.service
+ExecStart=/usr/sbin/powertop --auto-tune" > /etc/systemd/system/powertop.service
 
 # Timer
 echo "[Unit]
 Description=Run powertop regularly
 
 [Timer]
+OnBootSec=15
 OnUnitActiveSec=2min
 
 [Install]
@@ -137,11 +127,6 @@ sed -i '/GRUB_CMDLINE_LINUX_/c\GRUB_CMDLINE_LINUX_DEFAULT="quiet loglevel=0 \\\
     vga=current vt.global_cursor_default=0 splash"' \
     /etc/default/grub
 
-########################
-# Use fallout grub theme
-########################
-wget -O - https://github.com/shvchk/fallout-grub-theme/raw/master/install.sh | bash
-
 ################
 # Plymouth setup
 ################
@@ -149,13 +134,6 @@ echo 'intel_agp
 drm
 i915 modeset=1' >> /etc/initramfs-tools/modules
 plymouth-set-default-theme -R breeze
-
-##################################################
-# Copy Firefox and Thunderbird preferences to home
-##################################################
-cd /tmp
-cp config-dump/FirefoxThunderbird/firefox_prefs.js /home/summonholmes/
-cp config-dump/FirefoxThunderbird/thunderbird_prefs.js /home/summonholmes/
 
 ######################################
 # One more big upgrade try and cleanup
