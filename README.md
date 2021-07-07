@@ -1,6 +1,8 @@
 # debian_full_setup
 Sets up a minimal Debian system to a Debian system with my preferred defaults.
 
+UPDATE: This needs updating for Debian 10 Buster
+
 ## Introduction
 Rather than configure a system inch-by-inch, why not put everything into a few shell scripts and forget all your troubles?  This is what I prefer to do.  Doing a project such as this is great for practicing regular expressions with awk and sed, using wget and apt to install packages without a web browser, replacing config files with others from another git repository, automating system administration, and much more.
 
